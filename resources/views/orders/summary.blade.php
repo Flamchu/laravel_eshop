@@ -15,7 +15,7 @@
             <tr>
                 <th>Product</th>
                 <th>Unit Price</th>
-                <th>Qty</th>
+                <th>Quantity</th>
                 <th>Total</th>
             </tr>
         </thead>
@@ -31,6 +31,7 @@
             <tr>
                 <td colspan="3"><strong>Total</strong></td>
                 <td><strong>{{ number_format($order->total, 2) }}</strong></td>
+                <td><strong>Kč</strong></td>
             </tr>
         </tbody>
     </table>
