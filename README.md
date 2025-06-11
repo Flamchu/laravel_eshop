@@ -80,6 +80,86 @@ Použil jsem Laravel Breeze pro základní autentizaci administrátorů.
 
 Odkaz na dokumentaci: [Authentication](https://laravel.com/docs/10.x/authentication)
 
+# Deník vývoje Laravel aplikace - Pokračování
+
+## 10. Implementace objednávkového systému
+
+### 10.1 Vytvoření modelů a migrací pro objednávky
+
+Vytvořil jsem modely `Order` a `OrderItem` s příslušnými migracemi pro ukládání objednávek do databáze.
+
+```php
+// Order model
+class Order extends Model {
+    protected $fillable = ['customer_name', 'customer_email', 'total'];
+
+    public function items() {
+        return $this->hasMany(OrderItem::class);
+    }
+}
+
+// OrderItem model
+class OrderItem extends Model {
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'price'];
+
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
+}
+```
+
+Odkaz na dokumentaci: [Eloquent Relationships](https://laravel.com/docs/10.x/eloquent-relationships)
+
+### 10.2 Checkout proces
+
+Implementoval jsem checkout proces v `CartController` s následujícími kroky:
+
+1. Validace zákaznických údajů
+2. Vytvoření objednávky v databázi
+3. Generování PDF souhrnu
+4. Odeslání potvrzovacího emailu
+5. Vyprázdnění košíku
+
+```php
+public function checkout(Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+    ]);
+
+    // Vytvoření objednávky
+    $order = Order::create([
+        'customer_name' => $validated['name'],
+        'customer_email' => $validated['email'],
+        'total' => $this->calculateTotal(),
+    ]);
+
+    // Přidání položek
+    foreach(session('cart', []) as $item) {
+        $order->items()->create([
+            'product_id' => $item['product']->id,
+            'quantity' => $item['quantity'],
+            'price' => $item['product']->price,
+        ]);
+    }
+
+    // Generování PDF
+    $pdf = PDF::loadView('orders.summary', ['order' => $order]);
+
+    // Vyprázdnění košíku
+    session()->forget('cart');
+
+    // Stažení PDF
+    return $pdf->download("order-{$order->id}.pdf");
+}
+```
+
+### 10.3 Generování PDF
+
+Pro generování PDF jsem použil balíček `barryvdh/laravel-dompdf`. Vytvořil jsem šablonu `resources/views/orders/summary.blade.php` pro výpis objednávky.
+
+Odkaz na dokumentaci: [Laravel-Dompdf](https://github.com/barryvdh/laravel-dompdf)
+
 ## Výhody a nevýhody Laravel frameworku
 
 ### Výhody:

@@ -37,7 +37,7 @@ class CartController extends Controller
 
         session(['cart' => $cart]);
 
-        return redirect()->route('cart.index')->with('success', 'Product successfully added.');
+        return redirect()->route('shop.index')->with('success', 'Product added to cart.');
     }
 
     public function remove(Product $product)
@@ -84,10 +84,8 @@ class CartController extends Controller
             ]);
         }
 
-        // Clear cart
         session()->forget('cart');
 
-        // Generate PDF
         $pdf = Pdf::loadView('orders.summary', ['order' => $order->load('items.product')]);
 
         return $pdf->download('order_' . $order->id . '.pdf');
