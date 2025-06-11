@@ -1,61 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Deník vývoje Laravel aplikace
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Inicializace projektu
 
-## About Laravel
+Začal jsem vytvořením nového Laravel projektu pomocí Composeru. Následně jsem nakonfiguroval základní nastavení jako připojení k databázi a environment proměnné.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Odkaz na dokumentaci: [Laravel Installation](https://laravel.com/docs/10.x/installation)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Vytvoření modelů a migrací
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Vytvořil jsem modely `Category` a `Product` s příslušnými migracemi. Pro kategorie jsem implementoval vztah parent-child pomocí `parent_id`.
 
-## Learning Laravel
+Odkaz na dokumentaci:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   [Eloquent: Getting Started](https://laravel.com/docs/10.x/eloquent)
+-   [Migrations](https://laravel.com/docs/10.x/migrations)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```php
+// Příklady modelů
+class Category extends Model {
+    public function parent() {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    public function children() {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+}
+```
 
-## Laravel Sponsors
+## 3. Tvorba controllerů
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Vytvořil jsem CRUD controllery pro správu kategorií a produktů v admin sekci a základní controllery pro frontend.
 
-### Premium Partners
+Odkaz na dokumentaci: [Controllers](https://laravel.com/docs/10.x/controllers)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 4. Implementace cest (routes)
 
-## Contributing
+Definoval jsem routy pro admin sekci i pro frontend shopu, včetně resource rout pro CRUD operace.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Odkaz na dokumentaci: [Routing](https://laravel.com/docs/10.x/routing)
 
-## Code of Conduct
+```php
+Route::resource('admin/categories', CategoryController::class);
+Route::resource('admin/products', ProductController::class);
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 5. Tvorba Blade šablon
 
-## Security Vulnerabilities
+Vytvořil jsem základní layout a dědičnou strukturu šablon. Implementoval jsem admin rozhraní pro správu kategorií a produktů a uživatelské rozhraní pro prohlížení shopu.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Odkaz na dokumentaci: [Blade Templates](https://laravel.com/docs/10.x/blade)
 
-## License
+## 6. Validace a ukládání dat
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Implementoval jsem validaci vstupních dat pro vytváření a editaci produktů a kategorií, včetně validace obrázků.
+
+Odkaz na dokumentaci: [Validation](https://laravel.com/docs/10.x/validation)
+
+```php
+$request->validate([
+    'name' => 'required|string|max:255',
+    'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+]);
+```
+
+## 7. Správa obrázků
+
+Implementoval jsem nahrávání a správu obrázků produktů pomocí Laravel Filesystemu.
+
+Odkaz na dokumentaci: [Filesystem / Cloud Storage](https://laravel.com/docs/10.x/filesystem)
+
+## 8. Košík
+
+Vytvořil jsem jednoduchý košík pomocí session, který umožňuje přidávat, odebírat a mazat položky.
+
+## 9. Autentizace
+
+Použil jsem Laravel Breeze pro základní autentizaci administrátorů.
+
+Odkaz na dokumentaci: [Authentication](https://laravel.com/docs/10.x/authentication)
+
+## Výhody a nevýhody Laravel frameworku
+
+### Výhody:
+
+1. **Elegantní syntaxe** - Laravel nabízí čitelnou a expresivní syntaxi
+2. **Bohatá dokumentace** - Výborná dokumentace s mnoha příklady
+3. **Eloquent ORM** - Výkonný a intuitivní ORM systém
+4. **Blade šablony** - Výkonný templatovací engine s dědičností
+5. **Artisan CLI** - Užitečné nástroje pro vývoj
+6. **Zabudovaná bezpečnost** - CSRF ochrana, validace, escapování atd.
+
+### Nevýhody:
+
+1. **Učení - syntaxe** - Pro začátečníky může být složitější
+2. **Paměťová náročnost** - Vyšší paměťové nároky než některé jiné frameworky
+3. **Přísná struktura** - Nutnost dodržovat konvence frameworku

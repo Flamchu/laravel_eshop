@@ -14,6 +14,7 @@ Route::get('/', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/kategorie/{category:slug}', [ShopController::class, 'category'])->name('shop.category');
 Route::get('/produkt/{product}', [ShopController::class, 'show'])->name('shop.show');
 
+Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

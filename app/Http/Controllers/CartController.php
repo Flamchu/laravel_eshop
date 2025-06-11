@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CartController extends Controller
 {
@@ -53,4 +56,41 @@ class CartController extends Controller
         session()->forget('cart');
         return redirect()->route('cart.index')->with('success', 'Cart emptied.');
     }
+
+    public function checkout(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('error', 'Cart is empty.');
+        }
+
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['product']->price * $item['quantity'];
+        }
+
+        $order = Order::create([
+            'customer_name' => $request->input('name'),
+            'customer_email' => $request->input('email'),
+            'total' => $total
+        ]);
+
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item['product']->id,
+                'quantity' => $item['quantity'],
+                'price' => $item['product']->price
+            ]);
+        }
+
+        // Clear cart
+        session()->forget('cart');
+
+        // Generate PDF
+        $pdf = Pdf::loadView('orders.summary', ['order' => $order->load('items.product')]);
+
+        return $pdf->download('order_' . $order->id . '.pdf');
+    }
+
 }
