@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use \App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -16,7 +17,7 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $categories = \App\Models\Category::all();
+        $categories = Category::all();
         return view('admin.categories.create', compact('categories'));
     }
 
@@ -27,7 +28,7 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
-        \App\Models\Category::create([
+        Category::create([
             'name' => $request->name,
             'parent_id' => $request->parent_id,
         ]);
@@ -38,7 +39,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         // nezobrazuj aktuální kategorii jako parenta
-        $categories = \App\Models\Category::where('id', '!=', $category->id)->get();
+        $categories = Category::where('id', '!=', $category->id)->get();
 
         return view('admin.categories.edit', compact('category', 'categories'));
     }
@@ -61,10 +62,10 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         // children out
-        \App\Models\Category::where('parent_id', $category->id)->update(['parent_id' => null]);
+        Category::where('parent_id', $category->id)->update(['parent_id' => null]);
 
         // products off
-        \App\Models\Product::where('category_id', $category->id)->update(['category_id' => null]);
+        Product::where('category_id', $category->id)->update(['category_id' => null]);
 
         $category->delete();
 
