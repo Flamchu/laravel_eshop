@@ -34,7 +34,7 @@ class CartController extends Controller
 
         session(['cart' => $cart]);
 
-        return redirect()->route('cart.index')->with('success', 'Produkt přidán do košíku.');
+        return redirect()->route('cart.index')->with('success', 'Product successfully added.');
     }
 
     public function remove(Product $product)
@@ -45,12 +45,12 @@ class CartController extends Controller
 
         session(['cart' => $cart]);
 
-        return redirect()->route('cart.index')->with('success', 'Produkt odebrán z košíku.');
+        return redirect()->route('cart.index')->with('success', 'Product removed.');
     }
 
     public function clear()
     {
         session()->forget('cart');
-        return redirect()->route('cart.index')->with('success', 'Košík byl vyprázdněn.');
+        return redirect()->route('cart.index')->with('success', 'Cart emptied.');
     }
 }

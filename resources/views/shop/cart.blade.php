@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Košík</h1>
+    <h1 class="text-2xl font-bold mb-4">Cart</h1>
 
     @if(count($cart) > 0)
         <table class="w-full mb-4">
             <thead>
                 <tr>
-                    <th>Název</th>
-                    <th>Množství</th>
-                    <th>Cena</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Price</th>
                     <th></th>
                 </tr>
             </thead>
@@ -22,7 +22,7 @@
                         <td>
                             <form method="POST" action="{{ route('cart.remove', $item['product']) }}">
                                 @csrf
-                                <button type="submit" class="text-red-500">Odebrat</button>
+                                <button type="submit" class="text-red-500">Remove</button>
                             </form>
                         </td>
                     </tr>
@@ -30,13 +30,13 @@
             </tbody>
         </table>
 
-        <p class="font-bold mb-4">Celkem: {{ $total }} Kč</p>
+        <p class="font-bold mb-4">Total: {{ $total }} Kč</p>
 
         <form method="POST" action="{{ route('cart.clear') }}">
             @csrf
-            <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded">Dokončit objednávku</button>
+            <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded">Complete order</button>
         </form>
     @else
-        <p>Košík je prázdný.</p>
+        <p>The cart is empty.</p>
     @endif
 @endsection

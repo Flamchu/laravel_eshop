@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-4">Všechny produkty</h1>
+    <h1 class="text-2xl font-bold mb-4">All available products</h1>
 
     @include('shop.partials.categories')
 

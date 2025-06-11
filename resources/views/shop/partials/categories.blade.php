@@ -2,7 +2,7 @@
 @if($breadcrumbs ?? false)
     <nav class="mb-4 text-sm text-gray-700">
         <ul class="flex items-center space-x-1">
-            <li><a href="{{ route('shop.index') }}" class="underline">Domů</a></li>
+            <li><a href="{{ route('shop.index') }}" class="underline">Home</a></li>
             @foreach ($breadcrumbs as $crumb)
                 <li>/</li>
                 <li>

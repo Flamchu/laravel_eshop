@@ -9,9 +9,9 @@
 
 <body class="font-sans antialiased bg-gray-100 text-gray-800">
     <nav class="bg-white shadow px-4 py-2 mb-6">
-        <a href="{{ route('admin.categories.index') }}">Kategorie</a> |
-        <a href="{{ route('admin.products.index') }}">Produkty</a> |
-        <a href="{{ route('dashboard') }}">Domů</a>
+        <a href="{{ route('admin.categories.index') }}">Categories</a> |
+        <a href="{{ route('admin.products.index') }}">Products</a> |
+        <a href="{{ route('shop.index') }}">Home</a>
     </nav>
 
     <main class="container mx-auto p-4">

@@ -43,7 +43,7 @@ class CategoryController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Kategorie byla přidána.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category added.');
     }
 
 
@@ -84,7 +84,7 @@ class CategoryController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Kategorie byla upravena.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category edited.');
     }
 
 
@@ -102,7 +102,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('success', 'Kategorie byla smazána.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted.');
     }
 
 }

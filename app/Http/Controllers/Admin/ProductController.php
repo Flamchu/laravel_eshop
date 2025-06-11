@@ -37,7 +37,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('admin.products.index')
-            ->with('success', 'Produkt byl přidán.');
+            ->with('success', 'Product added.');
     }
 
     public function edit(Product $product)
@@ -64,7 +64,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('admin.products.index')
-            ->with('success', 'Produkt byl upraven.');
+            ->with('success', 'Product edited.');
     }
 
     public function destroy(Product $product)
@@ -74,7 +74,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('admin.products.index')
-            ->with('success', 'Produkt byl smazán.');
+            ->with('success', 'Product deleted.');
     }
 
     private function deleteImageIfExists(?string $path): void
