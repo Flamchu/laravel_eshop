@@ -35,6 +35,13 @@
         </div>
 
         <div>
+            <label for="description" class="block font-medium">Description</label>
+            <textarea name="description" id="description" rows="4"
+                class="w-full border rounded px-2 py-1">{{ old('description', $product->description) }}</textarea>
+        </div>
+
+
+        <div>
             <label for="image" class="block font-medium">Image</label>
             <input type="file" name="image" id="image" class="w-full border rounded px-2 py-1">
             @if ($product->image)

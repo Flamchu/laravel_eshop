@@ -15,7 +15,6 @@
             </nav>
 
             <div class="md:flex">
-                <!-- Product Gallery -->
                 <div class="md:w-1/2 p-6">
                     <div class="sticky top-6">
                         <div class="mb-4 rounded-xl overflow-hidden shadow-lg bg-gray-100 dark:bg-gray-700">
@@ -25,34 +24,25 @@
                     </div>
                 </div>
 
-                <!-- Product Details -->
                 <div class="md:w-1/2 p-6">
-                    <!-- Product Header -->
                     <div class="mb-6">
                         <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ $product->name }}</h1>
-                        @if($product->sku)
-                            <p class="text-sm text-gray-500 dark:text-gray-400">SKU: {{ $product->sku }}</p>
-                        @endif
                     </div>
 
-                    <!-- Price Section -->
+                    <div class="prose max-w-none dark:prose-invert mb-8">
+                        <div class="flex items-center">
+                            <p class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ $product->description }}
+                            </p>
+                        </div>
+                    </div>
+
                     <div class="mb-6">
                         <div class="flex items-center">
                             <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ $product->price }}
                                 Kč</span>
-                            @if($product->compare_price)
-                                <span
-                                    class="ml-3 text-lg text-gray-400 dark:text-gray-500 line-through">{{ $product->compare_price }}
-                                    Kč</span>
-                                <span
-                                    class="ml-3 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 text-xs font-semibold px-2 py-1 rounded-full">
-                                    Save {{ round(100 - ($product->price / $product->compare_price * 100)) }}%
-                                </span>
-                            @endif
                         </div>
                     </div>
 
-                    <!-- Product Actions -->
                     <form method="POST" action="{{ route('cart.add', $product) }}" class="mb-8">
                         @csrf
                         <div class="flex flex-wrap items-center gap-4">
@@ -75,11 +65,6 @@
                             </button>
                         </div>
                     </form>
-
-                    <!-- Product Description -->
-                    <div class="prose max-w-none dark:prose-invert mb-8">
-                        {!! $product->description !!}
-                    </div>
                 </div>
             </div>
         </div>
