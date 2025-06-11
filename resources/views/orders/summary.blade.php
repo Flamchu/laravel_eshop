@@ -31,7 +31,7 @@
             <tr>
                 <td colspan="3"><strong>Total</strong></td>
                 <td><strong>{{ number_format($order->total, 2) }}</strong></td>
-                <td><strong>Kč</strong></td>
+                <td><strong>Kc</strong></td>
             </tr>
         </tbody>
     </table>
